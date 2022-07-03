@@ -1,0 +1,27 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "a food recipi app",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krishna-saini/forkify.git"
+  },
+  "author": "krishna saini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krishna-saini/forkify/issues"
+  },
+  "homepage": "https://github.com/krishna-saini/forkify#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.6.2",
+    "parcel": "^2.6.2",
+    "saas": "^1.0.0"
+  },
+  "dependencies": {
+    "core-js": "^3.23.3",
+    "regenerator-runtime": "^0.13.9"
+  }
+}
