@@ -1,6 +1,7 @@
 import icons from "url:../img/icons.svg";
 import "regenerator-runtime/runtime"; // to polyfill async await
 import "core-js/stable"; //to polyfill everthing else
+import * as modal from "./modal.js";
 
 const recipeContainer = document.querySelector(".recipe");
 
@@ -28,7 +29,7 @@ const renderSpinner = function (parentEl) {
   parentEl.insertAdjacentHTML("afterbegin", markup);
 };
 
-async function fetchingRecipe() {
+async function showRecipe() {
   try {
     // 0)laoding spinner
     renderSpinner(recipeContainer);
@@ -38,33 +39,17 @@ async function fetchingRecipe() {
     console.log(hashId);
     //guard clause
     if (!hashId) return;
+
     //1) laoding recipe
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${hashId}`
-    );
-    const data = await res.json();
-    if (!res.ok) throw new Error(`${data.message}`);
-
-    const { recipe } = data.data;
-
-    const modifiedRecipe = {
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-      image: recipe.image_url,
-    };
+    await modal.loadRecipe(hashId);
+    const { recipe } = modal.state;
 
     // 2)rendering recipe
     const markup = `
       <figure class="recipe__fig">
-        <img src=${modifiedRecipe.image} alt=${
-      modifiedRecipe.title
-    } class="recipe__img" />
+        <img src=${recipe.image} alt=${recipe.title} class="recipe__img" />
         <h1 class="recipe__title">
-          <span>${modifiedRecipe.title}</span>
+          <span>${recipe.title}</span>
         </h1>
       </figure>
 
@@ -74,7 +59,7 @@ async function fetchingRecipe() {
             <use href="${icons}#icon-clock"></use>
           </svg>
           <span class="recipe__info-data recipe__info-data--minutes">${
-            modifiedRecipe.cookingTime
+            recipe.cookingTime
           }</span>
           <span class="recipe__info-text">minutes</span>
         </div>
@@ -114,7 +99,7 @@ async function fetchingRecipe() {
       <div class="recipe__ingredients">
         <h2 class="heading--2">Recipe ingredients</h2>
         <ul class="recipe__ingredient-list">
-        ${modifiedRecipe.ingredients
+        ${recipe.ingredients
           .map((ing) => {
             return `<li class="recipe__ingredient">
         <svg class="recipe__icon">
@@ -148,13 +133,13 @@ async function fetchingRecipe() {
         <p class="recipe__directions-text">
           This recipe was carefully designed and tested by
           <span class="recipe__publisher">${
-            modifiedRecipe.publisher
+            recipe.publisher
           }</span>. Please check out
           directions at their website.
         </p>
         <a
           class="btn--small recipe__btn"
-          href=${modifiedRecipe.sourceUrl}
+          href=${recipe.sourceUrl}
           target="_blank"
         >
           <span>Directions</span>
@@ -173,7 +158,7 @@ async function fetchingRecipe() {
 }
 
 ["hashchange", "load"].map((event) =>
-  window.addEventListener(event, fetchingRecipe)
+  window.addEventListener(event, showRecipe)
 );
 
 // window.addEventListener("hashchange", fetchingRecipe);
