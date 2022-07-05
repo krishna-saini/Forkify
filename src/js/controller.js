@@ -1,8 +1,10 @@
 import recipeView from "./views/recipeView.js";
+import searchView from "./views/searchView.js";
 
 import "regenerator-runtime/runtime"; // to polyfill async await
 import "core-js/stable"; //to polyfill everthing else
 import * as modal from "./modal.js";
+import SearchView from "./views/SearchView.js";
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -30,6 +32,24 @@ async function controlRecipes() {
   }
 }
 
-const init = () => recipeView.addHandlerRender(controlRecipes);
+async function controlSearchResults() {
+  try {
+    // 1) get search query
+    const query = searchView.getQuery();
+    //guard clause
+    if (!query) throw new Error("no recipe found");
+    console.log(query);
+
+    // 2) load search result
+    await modal.loadSearchResults(query);
+
+    //  4) render search recipes
+  } catch (err) {}
+}
+
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
+};
 
 init();

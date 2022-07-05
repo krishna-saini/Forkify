@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "a food recipi app",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,6 @@
     "core-js": "^3.23.3",
     "fractional": "^1.0.0",
     "regenerator-runtime": "^0.13.9"
-  }
+  },
+  "main": "index.js"
 }
