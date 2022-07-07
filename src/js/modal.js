@@ -17,9 +17,9 @@ export const loadSearchResults = async function (query) {
     state.search.query = query;
 
     const data = await getJSON(`${API_URL}?search=${query}`);
-    console.log(data);
+    console.log(data.data.recipes.length);
+
     const { recipes } = data.data;
-    console.log(recipes);
 
     state.search.results = recipes.map((recipe) => {
       return {
@@ -29,10 +29,9 @@ export const loadSearchResults = async function (query) {
         image: recipe.image_url,
       };
     });
-
-    console.log(state.search.results);
   } catch (err) {
-    throw err;
+    console.log("error in modal");
+    throw err; //rethrowing error
   }
 };
 
