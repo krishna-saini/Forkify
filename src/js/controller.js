@@ -1,6 +1,7 @@
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
+import paginationView from "./views/paginationView.js";
 
 import "regenerator-runtime/runtime"; // to polyfill async await
 import "core-js/stable"; //to polyfill everthing else
@@ -45,22 +46,44 @@ async function controlSearchResults() {
     const query = searchView.getQuery();
     //guard clause
     if (!query) throw new Error("no recipe found");
-    console.log(query);
 
     // 2) load search result
     await modal.loadSearchResults(query);
 
-    //  4) render search recipes
+    //  3) render search recipes
+    // resultsView.render(modal.state.search.results);
+    console.log(modal.getSearchResultsPage());
+    resultsView.render(modal.getSearchResultsPage());
 
-    resultsView.render(modal.state.search.results);
+    // 4) render pagination
+    paginationView.render(modal.state.search);
   } catch (err) {
-    resultsView.render();
+    resultsView.render(err.message);
   }
+}
+
+function controlPagination(gotoPage) {
+  // 1) render updated results list
+  resultsView.render(modal.getSearchResultsPage(gotoPage));
+
+  // 2)updated buttons
+  paginationView.render(modal.state.search);
+}
+
+function controlServings(newServings) {
+  //update qty in state
+  console.log(newServings);
+  modal.updataServings(newServings);
+
+  //render recipe view again
+  recipeView.render(modal.state.recipe);
 }
 
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 
 init();

@@ -1,6 +1,6 @@
 import icons from "url:../../img/icons.svg";
 import { Fraction } from "fractional";
-import View from "./View.js";
+import View from "./view.js";
 
 class RecipeView extends View {
   _parentEl = document.querySelector(".recipe");
@@ -12,6 +12,18 @@ class RecipeView extends View {
     ["hashchange", "load"].map((event) =>
       window.addEventListener(event, handler)
     );
+  }
+
+  addHandlerServings(handler) {
+    console.log(this._data);
+    this._parentEl.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--update-servings");
+
+      if (!btn) return;
+      const updateTo = btn.getAttribute("data-updateTo");
+      console.log(updateTo);
+      if (+updateTo > 0) handler(+updateTo);
+    });
   }
 
   renderSuccessMessage(successMsg = this._successMsg) {
@@ -26,6 +38,7 @@ class RecipeView extends View {
   }
 
   _generateMarkup() {
+    console.log(this._data.in);
     return `
       <figure class="recipe__fig">
         <img src=${this._data.image} alt=${
@@ -35,7 +48,6 @@ class RecipeView extends View {
           <span>${this._data.title}</span>
         </h1>
       </figure>
-
       <div class="recipe__details">
         <div class="recipe__info">
           <svg class="recipe__info-icon">
@@ -50,23 +62,27 @@ class RecipeView extends View {
           <svg class="recipe__info-icon">
             <use href="${icons}#icon-users"></use>
           </svg>
-          <span class="recipe__info-data recipe__info-data--people">4</span>
-          <span class="recipe__info-text">servings</span>
-
+          <span class="recipe__info-data recipe__info-data--people">${
+            this._data.servings
+          }</span>
+          <span class="recipe__info-text">Servings</span>
           <div class="recipe__info-buttons">
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--update-servings" data-updateTo="${
+              this._data.servings - 1
+            }">
               <svg>
                 <use href="${icons}#icon-minus-circle"></use>
               </svg>
             </button>
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--update-servings" data-updateTo="${
+              this._data.servings + 1
+            }">
               <svg>
                 <use href="${icons}#icon-plus-circle"></use>
               </svg>
             </button>
           </div>
         </div>
-
         <div class="recipe__user-generated">
           <svg>
             <use href="${icons}#icon-user"></use>
@@ -78,7 +94,6 @@ class RecipeView extends View {
           </svg>
         </button>
       </div>
-
       <div class="recipe__ingredients">
         <h2 class="heading--2">Recipe ingredients</h2>
         <ul class="recipe__ingredient-list">
@@ -86,7 +101,6 @@ class RecipeView extends View {
           .map((ing) => this._generateMarkupIngredient(ing))
           .join("")}
           
-
           <li class="recipe__ingredient">
             <svg class="recipe__icon">
               <use href="${icons}#icon-check"></use>
@@ -99,7 +113,6 @@ class RecipeView extends View {
           </li>
         </ul>
       </div>
-
       <div class="recipe__directions">
         <h2 class="heading--2">How to cook it</h2>
         <p class="recipe__directions-text">

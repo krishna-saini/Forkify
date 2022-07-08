@@ -1,4 +1,3 @@
-// // //throw error if fetching takes long time
 import { TIMEOUT_SEC } from "./config.js";
 
 const timeout = function (s) {

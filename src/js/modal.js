@@ -1,5 +1,6 @@
 import { API_URL } from "./config.js";
 import { getJSON } from "./helper.js";
+import { RESULTS_PER_PAGE } from "./config.js";
 
 const parentEL = document.querySelector(".search-results");
 
@@ -9,18 +10,17 @@ export const state = {
   search: {
     query: "",
     results: [],
+    page: 1,
+    resultsPerPage: RESULTS_PER_PAGE,
   },
 };
 
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
-
     const data = await getJSON(`${API_URL}?search=${query}`);
-    console.log(data.data.recipes.length);
 
     const { recipes } = data.data;
-
     state.search.results = recipes.map((recipe) => {
       return {
         id: recipe.id,
@@ -30,7 +30,6 @@ export const loadSearchResults = async function (query) {
       };
     });
   } catch (err) {
-    console.log("error in modal");
     throw err; //rethrowing error
   }
 };
@@ -38,7 +37,6 @@ export const loadSearchResults = async function (query) {
 export const loadRecipe = async function (id) {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
-
     const { recipe } = data.data;
 
     state.recipe = {
@@ -50,10 +48,26 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
       image: recipe.image_url,
     };
-
-    // console.log(state.recipe);
   } catch (err) {
-    // console.error(err.message);
     throw err; //rethrowin error
   }
+};
+
+export const getSearchResultsPage = function (page = state.search.page) {
+  state.search.page = page;
+  const start = (page - 1) * state.search.resultsPerPage;
+  const end = page * state.search.resultsPerPage;
+
+  return state.search.results.slice(start, end);
+};
+
+export const updataServings = function (newServings = state.recipe.servings) {
+  console.log(newServings);
+  state.recipe.ingredients.forEach(
+    (ing) =>
+      (ing.quantity = (ing.quantity * newServings) / state.recipe.servings)
+  );
+
+  state.recipe.servings = newServings;
+  console.log(state.recipe);
 };

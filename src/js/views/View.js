@@ -1,16 +1,20 @@
-import icons from "url:../../img/icons.svg";
+import icons from "../../img/icons.svg";
 
 export default class View {
   _data;
+
+  _clear() {
+    this._parentEl.innerHTML = "";
+  }
+
   render(data) {
+    //checking for valid data
+    console.log(!data || (Array.isArray(data) && data.length === 0));
+    if (!data || (Array.isArray(data) && data.length === 0)) this.renderError();
     this._data = data;
     const markup = this._generateMarkup();
     this._clear();
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
-  }
-
-  _clear() {
-    this._parentEl.innerHTML = "";
   }
 
   renderSpinner() {
@@ -20,6 +24,7 @@ export default class View {
           <use href="${icons}#icon-loader"></use>
         </svg>
       </div>`;
+
     this._clear();
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
