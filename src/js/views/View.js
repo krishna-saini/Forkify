@@ -9,12 +9,46 @@ export default class View {
 
   render(data) {
     //checking for valid data
-    console.log(!data || (Array.isArray(data) && data.length === 0));
+
     if (!data || (Array.isArray(data) && data.length === 0)) this.renderError();
     this._data = data;
     const markup = this._generateMarkup();
     this._clear();
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  update(data) {
+    this._data = data;
+    const markup = this._generateMarkup();
+    console.log(typeof markup);
+    //convert this html string to virtual DOM object
+    const newDom = document.createRange().createContextualFragment(markup);
+    //extracting all elements from virtual dom
+    const newDomElements = [...newDom.querySelectorAll("*")];
+
+    //get real DOM
+    const currentDomElements = [...this._parentEl.querySelectorAll("*")];
+
+    newDomElements.forEach((newEl, i) => {
+      const currentEl = currentDomElements[i];
+      // console.log(currentEl, newEl.isEqualNode(currentEl));
+      //updates changed text
+      if (
+        !newEl.isEqualNode(currentEl) && //compare content of virtualDOMEl with RealDOMel
+        newEl.firstChild?.nodeValue.trim() !== "" //checking content of first chile(text node) is not empty
+      ) {
+        // console.log("💥💥💥💥", newEl.firstChild?.nodeValue.trim());
+        currentEl.textContent = newEl.textContent;
+      }
+
+      //updates changed attributes too
+      if (!newEl.isEqualNode(currentEl)) {
+        console.log(newEl, newEl.attributes);
+        Array.from(newEl.attributes).forEach((attr) => {
+          currentEl.setAttribute(attr.name, attr.value);
+        });
+      }
+    });
   }
 
   renderSpinner() {

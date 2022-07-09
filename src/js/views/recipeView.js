@@ -15,13 +15,12 @@ class RecipeView extends View {
   }
 
   addHandlerServings(handler) {
-    console.log(this._data);
     this._parentEl.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--update-servings");
 
       if (!btn) return;
       const updateTo = btn.getAttribute("data-updateTo");
-      console.log(updateTo);
+
       if (+updateTo > 0) handler(+updateTo);
     });
   }
@@ -38,7 +37,6 @@ class RecipeView extends View {
   }
 
   _generateMarkup() {
-    console.log(this._data.in);
     return `
       <figure class="recipe__fig">
         <img src=${this._data.image} alt=${

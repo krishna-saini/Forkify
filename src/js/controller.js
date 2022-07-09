@@ -17,14 +17,15 @@ if (module.hot) {
 
 async function controlRecipes() {
   try {
-    // 0)laoding spinner
-    recipeView.renderSpinner();
-
     //fetching hash id of recipe
     const hashId = window.location.hash.slice(1);
-
     //guard clause
     if (!hashId) return;
+
+    // 0)laoding spinner
+    recipeView.renderSpinner();
+    // update results view to marked selected results
+    resultsView.update(modal.getSearchResultsPage());
 
     //1) laoding recipe
 
@@ -52,7 +53,7 @@ async function controlSearchResults() {
 
     //  3) render search recipes
     // resultsView.render(modal.state.search.results);
-    console.log(modal.getSearchResultsPage());
+
     resultsView.render(modal.getSearchResultsPage());
 
     // 4) render pagination
@@ -72,11 +73,13 @@ function controlPagination(gotoPage) {
 
 function controlServings(newServings) {
   //update qty in state
-  console.log(newServings);
+
   modal.updataServings(newServings);
 
   //render recipe view again
-  recipeView.render(modal.state.recipe);
+  // recipeView.render(modal.state.recipe); it will render whole recipe section
+  //we want to update only part of the view
+  recipeView.update(modal.state.recipe);
 }
 
 const init = function () {
