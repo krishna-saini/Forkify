@@ -12,7 +12,9 @@ export default class View {
 
     if (!data || (Array.isArray(data) && data.length === 0)) this.renderError();
     this._data = data;
+
     const markup = this._generateMarkup();
+
     this._clear();
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
@@ -20,7 +22,7 @@ export default class View {
   update(data) {
     this._data = data;
     const markup = this._generateMarkup();
-    console.log(typeof markup);
+
     //convert this html string to virtual DOM object
     const newDom = document.createRange().createContextualFragment(markup);
     //extracting all elements from virtual dom
@@ -43,7 +45,7 @@ export default class View {
 
       //updates changed attributes too
       if (!newEl.isEqualNode(currentEl)) {
-        console.log(newEl, newEl.attributes);
+        // console.log(newEl, newEl.attributes);
         Array.from(newEl.attributes).forEach((attr) => {
           currentEl.setAttribute(attr.name, attr.value);
         });
@@ -63,15 +65,31 @@ export default class View {
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
 
-  renderError(errorMsg = this._errorMessage) {
+  renderError(msg = this._errorMessage) {
+    console.log(this._parentEl);
     const markup = `<div class="error">
     <div>
       <svg>
         <use href="${icons}#icon-alert-triangle"></use>
       </svg>
     </div>
-    <p>${errorMsg}</p>
+    <p>${msg}</p>
   </div>`;
+
+    this._clear();
+    this._parentEl.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  renderMessage(msg = this._successMessage) {
+    const markup = `<div class="error">
+    <div>
+      <svg>
+        <use href="${icons}#icon-alert-triangle"></use>
+      </svg>
+    </div>
+    <p>${msg}</p>
+  </div>`;
+
     this._clear();
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }

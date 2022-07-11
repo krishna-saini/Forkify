@@ -8,7 +8,6 @@ class paginationView extends View {
   addHandlerClick(handler) {
     // using event delegation
     this._parentEl.addEventListener("click", function (e) {
-      console.log(e.target);
       const btn = e.target.closest(".btn--inline");
       if (!btn) return;
       //   const goto = btn.dataset.goto;

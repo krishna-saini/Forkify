@@ -2,6 +2,9 @@ import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
 import paginationView from "./views/paginationView.js";
+import bookmarksView from "./views/bookmarksView.js";
+import addRecipeView from "./views/addRecipeView.js";
+import { MODAL_CLOSE_SEC } from "./config.js";
 
 import "regenerator-runtime/runtime"; // to polyfill async await
 import "core-js/stable"; //to polyfill everthing else
@@ -24,11 +27,13 @@ async function controlRecipes() {
 
     // 0)laoding spinner
     recipeView.renderSpinner();
-    // update results view to marked selected results
+    // update results view to marked selected search results
     resultsView.update(modal.getSearchResultsPage());
 
-    //1) laoding recipe
+    // 1) updating bookmark view
+    bookmarksView.update(modal.state.bookmarks);
 
+    //1) laoding recipe
     await modal.loadRecipe(hashId);
 
     // 2)rendering recipe
@@ -82,11 +87,67 @@ function controlServings(newServings) {
   recipeView.update(modal.state.recipe);
 }
 
+function controlAddBookmarks() {
+  // 1)Add/Delete bookmark
+  if (!modal.state.recipe.bookmarked) modal.addBookmark(modal.state.recipe);
+  else modal.deleteBookmark(modal.state.recipe.id);
+
+  // 2)update  recipe view
+  recipeView.update(modal.state.recipe);
+
+  // 3)Render bookmarks
+  bookmarksView.render(modal.state.bookmarks);
+}
+
+function controlBookmarks() {
+  // 3)Render bookmarks at the loading of page
+  bookmarksView.render(modal.state.bookmarks);
+}
+
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    // Show loading spinner
+    addRecipeView.renderSpinner();
+
+    // Upload the new recipe data
+    await modal.uploadRecipe(newRecipe);
+
+    // Render recipe
+    recipeView.render(modal.state.recipe);
+
+    // Render bookmark view
+    bookmarksView.render(modal.state.bookmarks);
+
+    // Change ID in URL
+    window.history.pushState(null, "", `#${modal.state.recipe.id}`);
+
+    // reload the page to enable adding more recipes
+    location.reload();
+
+    // Success message
+    const timer = setTimeout(() => {
+      addRecipeView.renderMessage();
+    }, (MODAL_CLOSE_SEC - 1.5) * 1000);
+
+    setTimeout(function () {
+      clearTimeout(timer);
+      // Close form window
+      addRecipeView.toggleWindow();
+    }, (MODAL_CLOSE_SEC - 1) * 1000);
+  } catch (err) {
+    console.error("💥", err);
+    addRecipeView.renderError(err.message);
+  }
+};
+
 const init = function () {
+  bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmarks);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 
 init();

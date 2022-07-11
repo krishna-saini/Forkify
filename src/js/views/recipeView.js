@@ -4,7 +4,8 @@ import View from "./view.js";
 
 class RecipeView extends View {
   _parentEl = document.querySelector(".recipe");
-  _successMsg;
+  _successMessage =
+    "Start by searching for a recipe or an ingredient. Have fun!";
   _errorMessage = "we could not find your recipe. please try another one.";
 
   //rendering the recipe right at the beginning
@@ -17,23 +18,18 @@ class RecipeView extends View {
   addHandlerServings(handler) {
     this._parentEl.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--update-servings");
-
       if (!btn) return;
       const updateTo = btn.getAttribute("data-updateTo");
-
       if (+updateTo > 0) handler(+updateTo);
     });
   }
 
-  renderSuccessMessage(successMsg = this._successMsg) {
-    const markup = `<div class="message">
-    <div>
-      <svg>
-        <use href="${icons}#icon-smile"></use>
-      </svg>
-    </div>
-    <p>Start by searching for a recipe or an ingredient. Have fun!</p>
-  </div>`;
+  addHandlerAddBookmark(handler) {
+    this._parentEl.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--bookmark");
+      if (!btn) return;
+      handler();
+    });
   }
 
   _generateMarkup() {
@@ -81,14 +77,16 @@ class RecipeView extends View {
             </button>
           </div>
         </div>
-        <div class="recipe__user-generated">
+        <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
           <svg>
             <use href="${icons}#icon-user"></use>
           </svg>
         </div>
-        <button class="btn--round">
+        <button class="btn--round btn--bookmark">
           <svg class="">
-            <use href="${icons}#icon-bookmark-fill"></use>
+            <use href="${icons}#${
+      this._data.bookmarked ? "icon-bookmark-fill" : "icon-bookmark"
+    }"></use>
           </svg>
         </button>
       </div>
