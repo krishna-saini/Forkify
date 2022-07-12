@@ -7,6 +7,13 @@ export default class View {
     this._parentEl.innerHTML = "";
   }
 
+  /**
+   * render the recieved object
+   * @params {object | objec[]} data - the data to be rendered (eg recipe)
+   * @returns {undefined }
+   * @this {object} View instance
+   * @author Krishna Saini
+   */
   render(data) {
     //checking for valid data
 
@@ -19,6 +26,11 @@ export default class View {
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
 
+  /**
+   * update part of the page, without rendering whole page
+   * @params {object } data - the data to be rendered (eg recipe)
+   * @returns {undefined }
+   */
   update(data) {
     this._data = data;
     const markup = this._generateMarkup();
@@ -53,6 +65,10 @@ export default class View {
     });
   }
 
+  /**
+   * render spinner functionality while data is fetching
+   * @returns {undefined }
+   */
   renderSpinner() {
     const markup = `
       <div class="spinner">
@@ -65,6 +81,11 @@ export default class View {
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
 
+  /**
+   * render error message if any while fetching data
+   * @param {string} msg=this._errorMessage - msg to be displayed if error occurs
+   * @returns {undefined }
+   */
   renderError(msg = this._errorMessage) {
     console.log(this._parentEl);
     const markup = `<div class="error">
@@ -80,6 +101,11 @@ export default class View {
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
 
+  /**
+   * render success message  while fetching data
+   * @param {string} msg=this._successMessage - msg to be displayed if data fetched successfully
+   * @returns {undefined }
+   */
   renderMessage(msg = this._successMessage) {
     const markup = `<div class="error">
     <div>

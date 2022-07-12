@@ -18,6 +18,10 @@ if (module.hot) {
 
 ///////////////////////////////////////
 
+/**
+ * control recipe view functionality
+ * @returns {undefined}
+ */
 async function controlRecipes() {
   try {
     //fetching hash id of recipe
@@ -43,6 +47,10 @@ async function controlRecipes() {
   }
 }
 
+/**
+ * control the search results functionality
+ * @returns {undefined}
+ */
 async function controlSearchResults() {
   try {
     // 0) spinner
@@ -68,6 +76,11 @@ async function controlSearchResults() {
   }
 }
 
+/**
+ * control the search results paginationa functionality
+ * @param {number}gotoPage - page no. to go to
+ * @returns {undefined}
+ */
 function controlPagination(gotoPage) {
   // 1) render updated results list
   resultsView.render(modal.getSearchResultsPage(gotoPage));
@@ -76,9 +89,13 @@ function controlPagination(gotoPage) {
   paginationView.render(modal.state.search);
 }
 
+/**
+ * control the recipe servings functionality
+ * @param {number} newServings - no. of people
+ * @returns {undefined}
+ */
 function controlServings(newServings) {
   //update qty in state
-
   modal.updataServings(newServings);
 
   //render recipe view again
@@ -87,6 +104,10 @@ function controlServings(newServings) {
   recipeView.update(modal.state.recipe);
 }
 
+/**
+ * control the Add Bookmarks functionality
+ * @returns {undefined}
+ */
 function controlAddBookmarks() {
   // 1)Add/Delete bookmark
   if (!modal.state.recipe.bookmarked) modal.addBookmark(modal.state.recipe);
@@ -99,11 +120,20 @@ function controlAddBookmarks() {
   bookmarksView.render(modal.state.bookmarks);
 }
 
+/**
+ * control the bookmarks functionality
+ * @returns {undefined}
+ */
 function controlBookmarks() {
   // 3)Render bookmarks at the loading of page
   bookmarksView.render(modal.state.bookmarks);
 }
 
+/**
+ * control the add new recipe functionality
+ * @param {object} newRecipe - recipe to be added by user
+ * @returns {undefined}
+ */
 const controlAddRecipe = async function (newRecipe) {
   try {
     // Show loading spinner
@@ -140,6 +170,10 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+/**
+ * control all the functionality while loading the page
+ * @returns {undefined}
+ */
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);

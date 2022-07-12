@@ -16,7 +16,10 @@ class AddRecipeView extends View {
     this._addHandlerShowWindow();
     this._addHandlerHideWindow();
   }
-
+  /**
+   * toggle the view of winoow and overlay toghether
+   * @returns {undefined}
+   */
   toggleWindow() {
     console.log("toggled");
     this._overlay.classList.toggle("hidden");
@@ -33,6 +36,11 @@ class AddRecipeView extends View {
     this._overlay.addEventListener("click", this.toggleWindow.bind(this));
   }
 
+  /**
+   * hangle user entered data in the add new recipe form
+   * @param {function}
+   * @returns {object} data - new recipe details to be added
+   */
   addHandlerUpload(handler) {
     this._parentEl.addEventListener("submit", function (e) {
       e.preventDefault();
