@@ -163,6 +163,7 @@ const controlAddRecipe = async function (newRecipe) {
     }, MODAL_CLOSE_SEC * 1000);
   } catch (err) {
     // reload the page to enable adding more recipes
+    console.log(err);
     location.reload();
     addRecipeView.renderError(err.message);
   }
