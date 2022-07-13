@@ -10,11 +10,11 @@ Features of web app-
 The project is build using vanilla Javascript and based on Model-View-Controller (MVC) architecture. 
 It is using publisher subscriber design pattern to establish connection between various components of MVC architecture.
 
-API get request
-API post request
-fullfilled/rejected Promise handling using async/await
-OOPS
-Modules
-Parcel
+API get request,
+API post request,
+fullfilled/rejected Promise handling using async/await,
+OOPS,
+Modules,
+Parcel,
 
 
