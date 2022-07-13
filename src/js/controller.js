@@ -60,7 +60,7 @@ async function controlSearchResults() {
     const query = searchView.getQuery();
     console.log("query:", query);
     //guard clause
-    if (!query) throw new Error("no recipe found");
+    if (!query) throw new Error("Enter dish name to explore over 1,000,000 dishes");
 
     // 2) load search result
     await modal.loadSearchResults(query);
