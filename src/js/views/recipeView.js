@@ -18,6 +18,7 @@ class RecipeView extends View {
   }
 
   addHandlerServings(handler) {
+    console.log("serving updation");
     this._parentEl.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--update-servings");
       if (!btn) return;
