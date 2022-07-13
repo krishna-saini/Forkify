@@ -149,7 +149,7 @@ export const uploadRecipe = async function (newRecipe) {
       });
 
     // make formatted object ready to send to api
-    recipe = {
+   const recipe = {
       title: newRecipe.title,
       source_url: newRecipe.sourceUrl,
       image_url: newRecipe.image,
