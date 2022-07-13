@@ -17,7 +17,10 @@ export default class View {
   render(data) {
     //checking for valid data
 
-    if (!data || (Array.isArray(data) && data.length === 0)) this.renderError();
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      this.renderError();
+      return;
+    }
     this._data = data;
 
     const markup = this._generateMarkup();
@@ -87,7 +90,6 @@ export default class View {
    * @returns {undefined }
    */
   renderError(msg = this._errorMessage) {
-    console.log(this._parentEl);
     const markup = `<div class="error">
     <div>
       <svg>
@@ -98,6 +100,7 @@ export default class View {
   </div>`;
 
     this._clear();
+
     this._parentEl.insertAdjacentHTML("afterbegin", markup);
   }
 

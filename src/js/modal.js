@@ -67,8 +67,9 @@ export const loadSearchResults = async function (query) {
         ...(recipe.key && { key: recipe.key }),
       };
     });
-    console.log(state.search.results[0].key);
+    console.log(state.search.results);
   } catch (err) {
+    console.log(err);
     throw err; //rethrowing error
   }
 };
@@ -77,7 +78,7 @@ export const getSearchResultsPage = function (page = state.search.page) {
   state.search.page = page;
   const start = (page - 1) * state.search.resultsPerPage;
   const end = page * state.search.resultsPerPage;
-
+  console.log(state.search.results.slice(start, end));
   return state.search.results.slice(start, end);
 };
 

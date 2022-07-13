@@ -58,6 +58,7 @@ async function controlSearchResults() {
 
     // 1) get search query
     const query = searchView.getQuery();
+    console.log("query:", query);
     //guard clause
     if (!query) throw new Error("no recipe found");
 
@@ -72,7 +73,7 @@ async function controlSearchResults() {
     // 4) render pagination
     paginationView.render(modal.state.search);
   } catch (err) {
-    resultsView.render(err.message);
+    resultsView.renderError(err.message);
   }
 }
 
@@ -153,19 +154,16 @@ const controlAddRecipe = async function (newRecipe) {
 
     // reload the page to enable adding more recipes
     location.reload();
-
     // Success message
-    const timer = setTimeout(() => {
-      addRecipeView.renderMessage();
-    }, (MODAL_CLOSE_SEC - 1.5) * 1000);
+    addRecipeView.renderMessage();
 
     setTimeout(function () {
-      clearTimeout(timer);
       // Close form window
       addRecipeView.toggleWindow();
-    }, (MODAL_CLOSE_SEC - 1) * 1000);
+    }, MODAL_CLOSE_SEC * 1000);
   } catch (err) {
-    console.error("💥", err);
+    // reload the page to enable adding more recipes
+    location.reload();
     addRecipeView.renderError(err.message);
   }
 };
