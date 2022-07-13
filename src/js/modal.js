@@ -159,6 +159,8 @@ export const uploadRecipe = async function (newRecipe) {
       // ingredients: ingredients,
       ingredients,
     };
+    
+    console.log(recipe);
 
     //AJAX CALL TO SEND DATA
     const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
