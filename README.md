@@ -1,5 +1,7 @@
 #forkify
 
+hosted at -- https://forkify-krishna-saini.netlify.app/
+
 A recipe search application with custom recipe upload
 
 modular, object- oriented and optimized scripts.
