@@ -18,5 +18,6 @@ fullfilled/rejected Promise handling using async/await,
 OOPS,
 Modules,
 Parcel,
+JS Docs
 
 
