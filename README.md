@@ -2,6 +2,8 @@
 
 A recipe search application with custom recipe upload
 
+modular, object- oriented and optimized scripts.
+
 Features of web app-
 1. Search recipes 
 2. Add your own recipes 
