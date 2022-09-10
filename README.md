@@ -1,4 +1,5 @@
 #forkify 
+
 It is a recipe search application with custom recipe upload option. It is made as a final assignment of a [udemy](https://www.udemy.com/course/the-complete-javascript-course/) course.
 
 
